@@ -6,6 +6,9 @@ import type { BinaryNode } from '../WABinary'
 import type { GroupMetadata } from './GroupMetadata'
 import type { CacheStore } from './Socket'
 
+// import button types as type-only to avoid circular runtime imports
+import type { SimpleButton, ButtonsMessage } from './Button'
+
 // export the WAMessage Prototypes
 export { proto as WAProto }
 export type WAMessage = proto.IWebMessageInfo & { key: WAMessageKey; messageStubParameters?: any }
@@ -30,7 +33,9 @@ export type WAGenericMediaMessage =
 	| proto.Message.IStickerMessage
 export const WAMessageStubType = proto.WebMessageInfo.StubType
 export const WAMessageStatus = proto.WebMessageInfo.Status
+
 import type { ILogger } from '../Utils/logger'
+
 export type WAMediaPayloadURL = { url: URL | string }
 export type WAMediaPayloadStream = { stream: Readable }
 export type WAMediaUpload = Buffer | WAMediaPayloadStream | WAMediaPayloadURL
@@ -191,22 +196,26 @@ export type AnyMediaMessageContent = (
 			caption?: string
 	  } & Contextable)
 ) & { mimetype?: string } & Editable
-	
-export type SimpleButton = {
-    buttonId: string
-    buttonText: {
-        displayText: string
-    }
-    type: number // default 1
+
+// ========== Button helper (exported) ==========
+// NOTE: It's ok to keep a lightweight helper here, but if you prefer,
+// move generateButtonsMessage to src/Utils/generics.ts and import it from there.
+export const generateButtonsMessage = (
+	contentText: string,
+	footerText: string,
+	buttons: SimpleButton[]
+) => {
+	return {
+		buttonsMessage: {
+			contentText,
+			footerText,
+			buttons,
+			headerType: 1
+		}
+	}
 }
 
-export interface ButtonsMessage {
-    contentText: string
-    footerText?: string
-    buttons: SimpleButton[]
-    headerType: number
-}
-
+// reply info and other types
 export type ButtonReplyInfo = {
 	displayText: string
 	id: string
