@@ -191,6 +191,21 @@ export type AnyMediaMessageContent = (
 			caption?: string
 	  } & Contextable)
 ) & { mimetype?: string } & Editable
+	
+export type SimpleButton = {
+    buttonId: string
+    buttonText: {
+        displayText: string
+    }
+    type: number // default 1
+}
+
+export interface ButtonsMessage {
+    contentText: string
+    footerText?: string
+    buttons: SimpleButton[]
+    headerType: number
+}
 
 export type ButtonReplyInfo = {
 	displayText: string
