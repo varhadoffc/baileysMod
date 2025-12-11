@@ -43,6 +43,20 @@ export const BufferJSON = {
 		return value
 	}
 }
+export const generateButtonsMessage = (
+    contentText: string,
+    footerText: string,
+    buttons: SimpleButton[]
+) => {
+    return {
+        buttonsMessage: {
+            contentText,
+            footerText,
+            buttons,
+            headerType: 1
+        }
+    }
+}
 
 export const getKeyAuthor = (key: WAMessageKey | undefined | null, meId = 'me') =>
 	(key?.fromMe ? meId : key?.participant || key?.remoteJid) || ''
